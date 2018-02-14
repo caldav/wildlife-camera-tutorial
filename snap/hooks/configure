@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+
+# CONFIG FILE PATH
+CONF=$SNAP_COMMON/motion-wildlife-camera.conf
+
+# CONFIG OPTIONS: options parsed from config file
+OPTIONS=$(cat $CONF | grep "^[a-z_]*" -oP | tr '\n' ' ')
+
+## Replace the value of an option in the config file
+refresh_opt_in_config() {
+  opt=$1
+  value="$2"
+  replace_line="$opt $value"
+  sed "s/^$opt\ .*/$replace_line/" $CONF 2>/dev/null >${CONF}.new
+  mv -f ${CONF}.new $CONF 2>/dev/null
+}
+
+# Iterate through the config options array
+for opt in $OPTIONS
+  do
+  # Use snapctl to get the value registered by the snap set command
+  if [ $(snapctl get $opt) ];then
+    refresh_opt_in_config $opt $(snapctl get $opt)
+  fi
+done

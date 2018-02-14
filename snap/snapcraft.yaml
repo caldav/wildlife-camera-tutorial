@@ -1,0 +1,42 @@
+name: wildlife-camera-tutorial
+version: 0.1
+summary: A simple wildlife camera app
+description: |
+  TODO
+
+grade: stable
+confinement: strict
+
+apps:
+  motion: 
+    command: motion-wrapper.sh
+    daemon: simple
+    plugs:
+      - opengl
+      - camera
+
+parts:
+  motion:
+    plugin: autotools
+    source: https://github.com/Motion-Project/motion.git
+    build-packages:
+      - libzip-dev
+      - libjpeg-dev
+      - libavformat-dev
+      - libavcodec-dev
+      - libavutil-dev
+      - libswscale-dev
+      - libavdevice-dev
+      - libwebp-dev
+      - pkg-config
+    stage-packages:
+      - gettext-base
+      - zlib1g
+      - libpulse0
+
+  assets:
+    plugin: dump
+    source: .
+    prime:
+      - motion-wrapper.sh
+      - motion-wildlife-camera.conf
