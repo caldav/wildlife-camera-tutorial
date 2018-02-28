@@ -30,7 +30,6 @@ parts:
       - libwebp-dev
       - pkg-config
     stage-packages:
-      - gettext-base
       - zlib1g
       - libpulse0
 
@@ -40,3 +39,5 @@ parts:
     prime:
       - motion-wrapper.sh
       - motion-wildlife-camera.conf
+    stage-packages:
+      - gettext-base
